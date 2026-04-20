@@ -1,0 +1,26 @@
+Nombre del Juego: Doll House
+Genero: Terror
+Objetivo: Encuentra los documentos, Roba la llave , Huye
+--------------------------------------------
+Sistemas de Ia implementados:
+Enemy-Coward:FSM
+Patrulla
+Si entras en su rango de vision huye 
+Tras huir se agacha un rato tomando valor para volver a patrullar
+--------------------------------------------
+Enemy-Stalker:Arbol de decisiones
+Pregunta 1: ¿Tengo visión directa del Player?
+Si: Perseguir   No: Buscar
+Pregunta 2: ¿Estoy lo suficientemente cerca?
+Si: Atacar No: Perseguir
+Pregunta 3: ¿Perdí al jugador pero tengo su última posición?
+Si: Ir al ultimo lugar que lo vi 
+Pregunta 4: ¿Estoy en modo búsqueda?
+No: Esperar/Mirar Si: Patrullar
+--------------------------------------------
+Enemy-Guard:FSM 
+Los maniquís se comunican entre si 
+EL espíritu que pose los maniquís trata de estar lo mas cerca posible al player(cambia a rojo cuando es el malo también cambia la pose)
+Cuando ve al player lo persigue con la mirada
+Si el player esta lo suficientemente cerca lo ataca y huye a un maniquí lejano, para volver a empezar el ciclo
+Acecho, Ataque, Huida
