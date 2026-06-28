@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-/// <summary>
-/// Algoritmo A* implementado a mano (mismo esquema visto en clase: delegados para
-/// condición de meta, conexiones, costos y heurística). Trabaja sobre <see cref="PathNode"/>.
-/// </summary>
 public static class AStarPathfinder
 {
     public static List<PathNode> Run(
@@ -34,7 +30,6 @@ public static class AStarPathfinder
 
             if (isSatisfied(node))
             {
-                // Reconstruimos el camino desde la meta hasta el inicio.
                 var path = new List<PathNode> { node };
                 PathNode current = node;
                 while (parents.ContainsKey(current))
@@ -56,12 +51,12 @@ public static class AStarPathfinder
                 if (costs.ContainsKey(child) && newCost > costs[child]) continue;
 
                 costs[child] = newCost;
-                pending.Enqueue(child, newCost + heuristic(child)); // f = g + h
+                pending.Enqueue(child, newCost + heuristic(child)); 
                 visited.Add(child);
                 parents[child] = node;
             }
         }
 
-        return new List<PathNode>(); // Sin camino.
+        return new List<PathNode>(); 
     }
 }

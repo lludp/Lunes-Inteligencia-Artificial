@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-/// <summary>
-/// Cola de prioridad (min-heap binario) usada por A*.
-/// Mismo patrón visto en clase; renombrada para no chocar si se importa
-/// el proyecto de referencia del profesor.
-/// </summary>
+
 public class PathPriorityQueue<TData>
 {
     public bool IsEmpty { get { return data.Count < 1; } }
@@ -36,7 +32,6 @@ public class PathPriorityQueue<TData>
             currentIndex = indexes[dp.Item1];
             parentIndex = (currentIndex - 1) / 2;
 
-            // Si la prioridad nueva no mejora, no hacemos nada.
             if (critery(data[currentIndex].Item2, dp.Item2)) return;
 
             data[currentIndex] = dp;

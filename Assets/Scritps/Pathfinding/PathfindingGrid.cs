@@ -6,15 +6,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-/// <summary>
-/// Genera y administra el grafo de nodos (<see cref="PathNode"/>) para el pathfinding.
-/// Los nodos son GameObjects reales, hijos de este objeto, creados automáticamente sobre
-/// el NavMesh horneado (así quedan solo sobre el piso navegable de la casa). Resuelve
-/// caminos con A* y los agentes consultan <see cref="FindPath"/>.
-///
-/// Uso en el editor: seleccionar este objeto y, en el menú contextual del componente,
-/// usar "Generate Nodes" (o "Clear Nodes"). Los nodos quedan guardados en la escena.
-/// </summary>
 public class PathfindingGrid : MonoBehaviour
 {
     public static PathfindingGrid Instance { get; private set; }
@@ -54,7 +45,6 @@ public class PathfindingGrid : MonoBehaviour
         nodes.AddRange(GetComponentsInChildren<PathNode>(true));
     }
 
-    // ----------------- API de pathfinding (runtime) -----------------
 
     public List<Vector3> FindPath(Vector3 startWorld, Vector3 targetWorld)
     {
@@ -68,8 +58,8 @@ public class PathfindingGrid : MonoBehaviour
             start,
             n => n == goal,
             n => n.neighbours,
-            (a, b) => Vector3.Distance(a.worldPosition, b.worldPosition),  // costo real
-            n => Vector3.Distance(n.worldPosition, goal.worldPosition));   // heurística
+            (a, b) => Vector3.Distance(a.worldPosition, b.worldPosition),  
+            n => Vector3.Distance(n.worldPosition, goal.worldPosition));   
 
         if (nodePath.Count == 0) return null;
 
@@ -118,14 +108,12 @@ public class PathfindingGrid : MonoBehaviour
         }
     }
 
-    // ----------------- Generación de nodos (solo editor) -----------------
 #if UNITY_EDITOR
     [ContextMenu("Generate Nodes")]
     public void GenerateNodes()
     {
         ClearNodes();
 
-        // 1) Determinar el área (X,Z) y el rango de alturas (Y) a sembrar.
         float minX, maxX, minZ, maxZ, minY, maxY;
 
         if (useNavMeshBounds)
@@ -160,8 +148,7 @@ public class PathfindingGrid : MonoBehaviour
             maxY = transform.position.y + 10f;
         }
 
-        // 2) Muestrear cada celda X,Z barriendo en altura para captar TODOS los pisos.
-        //    Hash espacial para descartar duplicados (un nodo por piso por celda).
+        
         float dedupeCell = nodeSpacing * 0.6f;
         var dedupe = new Dictionary<Vector3Int, bool>();
         var positions = new List<Vector3>();
@@ -187,14 +174,13 @@ public class PathfindingGrid : MonoBehaviour
                     if (positions.Count >= maxNodes)
                     {
                         Debug.LogWarning($"[PathfindingGrid] Se alcanzó el tope de {maxNodes} nodos. Subí Node Spacing o bajá maxNodes.");
-                        x = maxX; z = maxZ; y = minY; // cortar todos los loops
+                        x = maxX; z = maxZ; y = minY; 
                         break;
                     }
                 }
             }
         }
 
-        // 3) Crear los GameObjects de nodo.
         var created = new List<PathNode>(positions.Count);
         for (int i = 0; i < positions.Count; i++)
         {
@@ -214,7 +200,6 @@ public class PathfindingGrid : MonoBehaviour
         Debug.Log($"[PathfindingGrid] {created.Count} nodos generados sobre el NavMesh (multi-piso).");
     }
 
-    // Conexión con hash espacial: solo se comparan nodos en celdas vecinas, O(n) aprox.
     void ConnectNodes(List<PathNode> all)
     {
         float cell = Mathf.Max(0.1f, connectionRadius);
@@ -255,7 +240,6 @@ public class PathfindingGrid : MonoBehaviour
 
                             if ((a.worldPosition - b.worldPosition).sqrMagnitude > sqrRadius) continue;
 
-                            // Si hay una pared (borde del NavMesh) entre ambos, no se conectan.
                             if (blockConnectionsThroughWalls &&
                                 NavMesh.Raycast(a.worldPosition, b.worldPosition, out _, NavMesh.AllAreas))
                                 continue;
