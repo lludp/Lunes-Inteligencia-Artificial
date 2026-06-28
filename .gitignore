@@ -73,3 +73,10 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# --- Artefactos de la sesión realvirtual-MCP (no forman parte del TPO) ---
+/[Aa]ssets/.mcp_auth_token
+/Packages/io.realvirtual.mcp/
+/[Aa]ssets/[Ss]treamingAssets/
+/[Aa]ssets/[Ss]treamingAssets.meta
+/.screenshots/
