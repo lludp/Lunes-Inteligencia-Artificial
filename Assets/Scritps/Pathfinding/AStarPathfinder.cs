@@ -45,18 +45,18 @@ public static class AStarPathfinder
             for (int i = 0; i < children.Count; ++i)
             {
                 PathNode child = children[i];
-                if (visited.Contains(child)) continue;
+                if (child == null || visited.Contains(child)) continue;
 
                 float newCost = costs[node] + getCosts(node, child);
                 if (costs.ContainsKey(child) && newCost > costs[child]) continue;
 
                 costs[child] = newCost;
-                pending.Enqueue(child, newCost + heuristic(child)); 
+                pending.Enqueue(child, newCost + heuristic(child));
                 visited.Add(child);
                 parents[child] = node;
             }
         }
 
-        return new List<PathNode>(); 
+        return new List<PathNode>();
     }
 }

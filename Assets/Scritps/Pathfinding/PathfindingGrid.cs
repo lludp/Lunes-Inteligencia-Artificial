@@ -45,7 +45,6 @@ public class PathfindingGrid : MonoBehaviour
         nodes.AddRange(GetComponentsInChildren<PathNode>(true));
     }
 
-
     public List<Vector3> FindPath(Vector3 startWorld, Vector3 targetWorld)
     {
         if (nodes.Count == 0) CollectNodes();
@@ -58,8 +57,8 @@ public class PathfindingGrid : MonoBehaviour
             start,
             n => n == goal,
             n => n.neighbours,
-            (a, b) => Vector3.Distance(a.worldPosition, b.worldPosition),  
-            n => Vector3.Distance(n.worldPosition, goal.worldPosition));   
+            (a, b) => Vector3.Distance(a.worldPosition, b.worldPosition),
+            n => Vector3.Distance(n.worldPosition, goal.worldPosition));
 
         if (nodePath.Count == 0) return null;
 
@@ -148,7 +147,6 @@ public class PathfindingGrid : MonoBehaviour
             maxY = transform.position.y + 10f;
         }
 
-        
         float dedupeCell = nodeSpacing * 0.6f;
         var dedupe = new Dictionary<Vector3Int, bool>();
         var positions = new List<Vector3>();
@@ -174,7 +172,7 @@ public class PathfindingGrid : MonoBehaviour
                     if (positions.Count >= maxNodes)
                     {
                         Debug.LogWarning($"[PathfindingGrid] Se alcanzó el tope de {maxNodes} nodos. Subí Node Spacing o bajá maxNodes.");
-                        x = maxX; z = maxZ; y = minY; 
+                        x = maxX; z = maxZ; y = minY;
                         break;
                     }
                 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class ObjectGlow : MonoBehaviour
 {
     [Header("Configuración de Brillo")]
-    [ColorUsage(true, true)] 
+    [ColorUsage(true, true)]
     public Color glowColor = Color.yellow;
 
     public float minIntensity = 0f;

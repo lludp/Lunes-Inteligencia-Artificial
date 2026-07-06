@@ -7,7 +7,7 @@ public class Document : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerInventory>().AddDocument();
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
     }
 }

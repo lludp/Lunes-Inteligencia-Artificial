@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
-    public string loseSceneName = "LoseScene"; 
+    public string loseSceneName = "LoseScene";
 
     public void Die()
     {

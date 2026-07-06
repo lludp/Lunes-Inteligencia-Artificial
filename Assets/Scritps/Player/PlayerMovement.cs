@@ -14,27 +14,25 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        // Bloquea el mouse en el centro de la pantalla
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        // 1. Rotación con el Mouse (Cámara)
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         transform.Rotate(Vector3.up * mouseX);
 
-        // 2. Movimiento Horizontal
-        float moveX = Input.GetAxis("Horizontal"); // A, D
-        float moveZ = Input.GetAxis("Vertical");   // W, S
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         controller.Move(move * speed * Time.deltaTime);
 
-        // 3. Gravedad Simple
         if (controller.isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // Pequeña fuerza hacia abajo para mantenerlo pegado al suelo
+            velocity.y = -2f;
         }
 
         velocity.y += gravity * Time.deltaTime;

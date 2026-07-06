@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PathNode : MonoBehaviour
 {
     [Tooltip("Nodos vecinos navegables desde éste.")]

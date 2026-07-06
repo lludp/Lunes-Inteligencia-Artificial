@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-
 public class PathPriorityQueue<TData>
 {
     public bool IsEmpty { get { return data.Count < 1; } }

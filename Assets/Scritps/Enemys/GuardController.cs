@@ -11,23 +11,23 @@ public class GuardController : MonoBehaviour
 
     void Update()
     {
-        
+
         if (los.CanSeePlayer(transform, player))
         {
             if (Vector3.Distance(transform.position, player.position) < 3f)
             {
-                agent.isStopped = true; 
+                agent.isStopped = true;
                 transform.LookAt(player);
             }
             else
             {
                 agent.isStopped = false;
-                agent.destination = player.position; 
+                agent.destination = player.position;
             }
         }
         else
         {
-            agent.isStopped = true; 
+            agent.isStopped = true;
         }
     }
 }

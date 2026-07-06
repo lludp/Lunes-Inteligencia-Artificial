@@ -110,10 +110,10 @@ public class PuppetMaster : MonoBehaviour
         PlayerStats stats = player.GetComponent<PlayerStats>();
         if (stats != null)
         {
-            stats.Die(); 
+            stats.Die();
         }
 
-        yield return new WaitForSeconds(1.0f); 
+        yield return new WaitForSeconds(1.0f);
 
         Transform farPuppet = currentPuppet;
         float maxDist = 0;

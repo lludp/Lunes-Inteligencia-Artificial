@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections; 
+using System.Collections;
 
 public class CowardController : MonoBehaviour
 {
@@ -29,7 +29,7 @@ public class CowardController : MonoBehaviour
         switch (current)
         {
             case State.Patrol:
-                anim.SetInteger("State", 0); 
+                anim.SetInteger("State", 0);
                 if (canSee) current = State.Flee;
 
                 if (!agent.hasPath || agent.remainingDistance < 0.5f)
@@ -40,8 +40,8 @@ public class CowardController : MonoBehaviour
                 break;
 
             case State.Flee:
-                anim.SetInteger("State", 1); 
-                agent.speed = 6f; 
+                anim.SetInteger("State", 1);
+                agent.speed = 6f;
 
                 Vector3 dir = (transform.position - player.position).normalized;
                 agent.destination = transform.position + dir * 6f;
@@ -61,13 +61,13 @@ public class CowardController : MonoBehaviour
     IEnumerator WaitAndCalmDown()
     {
         isWaiting = true;
-        agent.isStopped = true;      
-        anim.SetInteger("State", 2); 
+        agent.isStopped = true;
+        anim.SetInteger("State", 2);
 
-        yield return new WaitForSeconds(4f); 
+        yield return new WaitForSeconds(4f);
 
         agent.isStopped = false;
-        agent.speed = 3.5f;          
+        agent.speed = 3.5f;
         current = State.Patrol;
         isWaiting = false;
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StealKey : MonoBehaviour
 {
-    public LineOfSight enemyLOS; 
+    public LineOfSight enemyLOS;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -11,7 +11,7 @@ public class StealKey : MonoBehaviour
             if (!enemyLOS.CanSeePlayer(enemyLOS.transform, other.transform))
             {
                 other.GetComponent<PlayerInventory>().GrabKey();
-                Destroy(gameObject); 
+                Destroy(gameObject);
             }
             else
             {

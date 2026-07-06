@@ -7,10 +7,9 @@ public class LineOfSight : MonoBehaviour
     public LayerMask obstacleMask;
 
     [Header("Ajustes de Altura")]
-    public float eyeHeight = 1.5f; 
-    public float targetOffset = 1.0f; 
+    public float eyeHeight = 1.5f;
+    public float targetOffset = 1.0f;
 
-   
     public void SetEyeHeight(float newHeight)
     {
         eyeHeight = newHeight;
@@ -43,8 +42,8 @@ public class LineOfSight : MonoBehaviour
     {
         Vector3 origin = transform.position + Vector3.up * eyeHeight;
 
-        Gizmos.color = Color.yellow; 
-        Gizmos.DrawWireSphere(origin, 0.2f); 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origin, 0.2f);
 
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(origin, distance);

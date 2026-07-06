@@ -3,19 +3,6 @@ using UnityEngine.AI;
 using System.Collections;
 using System.Collections.Generic;
 
-/// <summary>
-/// Enemigo Stalker. Decisiones por FSM + Line of Sight, navegación por A* (grilla
-/// propia, no NavMesh) y movimiento por steering behaviors.
-///
-///  - DECISIÓN: FSM (Patrol / Chase / Search / Attack) disparada por la LoS.
-///  - PATHFINDING: A* sobre <see cref="PathfindingGrid"/> para rodear obstáculos
-///    hacia el jugador o su última posición conocida.
-///  - STEERING: Seek/Arrive para seguir los waypoints del camino y Pursue para
-///    perseguir al jugador en línea directa cuando está cerca y a la vista.
-///
-/// El NavMeshAgent se usa SOLO como "mover" (agent.Move) para mantener al agente
-/// pegado al piso navegable; la RUTA la decide el A* propio.
-/// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 public class StalkerController : MonoBehaviour
 {
@@ -55,7 +42,7 @@ public class StalkerController : MonoBehaviour
     private float searchTimer;
 
     private Vector3 prevPlayerPos;
-    private float commandedSpeed; // velocidad que comandamos este frame (para animaciones)
+    private float commandedSpeed;
     private bool isAttacking;
     private bool warnedNoGrid;
 
@@ -65,7 +52,6 @@ public class StalkerController : MonoBehaviour
         los = GetComponent<LineOfSight>();
         anim = GetComponent<Animator>();
 
-        // Usamos el agente solo como mover: nosotros decidimos ruta y rotación.
         agent.updateRotation = false;
         agent.autoBraking = false;
     }
@@ -116,10 +102,10 @@ public class StalkerController : MonoBehaviour
 
                     if (distToPlayer <= directChaseRange)
                     {
-                        // Persecución directa con steering (Pursue) prediciendo al jugador.
+
                         Vector3 dir = SteeringBehaviours.Pursue(transform.position, player.position, playerVel, pursuePrediction);
                         MoveWithSteering(dir, chaseSpeed);
-                        path = null; // forzamos recalcular A* si vuelve a alejarse
+                        path = null;
                     }
                     else
                     {
@@ -134,7 +120,7 @@ public class StalkerController : MonoBehaviour
                 }
                 else
                 {
-                    // Perdió de vista: va por A* a la última posición conocida.
+
                     RequestPath(lastKnownPosition);
                     searchTimer = 0f;
                     state = State.Search;
@@ -153,7 +139,7 @@ public class StalkerController : MonoBehaviour
                 bool arrived = FollowPath(moveSpeed);
                 if (arrived)
                 {
-                    // Llegó al último punto conocido: mira alrededor un rato.
+
                     transform.Rotate(0f, 120f * dt, 0f);
                     searchTimer += dt;
                     if (searchTimer >= searchTime)
@@ -167,8 +153,6 @@ public class StalkerController : MonoBehaviour
 
         UpdateAnimations();
     }
-
-    // ----------------- Navegación A* + steering -----------------
 
     void RequestPath(Vector3 target)
     {
@@ -186,12 +170,11 @@ public class StalkerController : MonoBehaviour
         if (newPath != null && newPath.Count > 0)
         {
             path = newPath;
-            // El primer nodo es nuestra propia celda: arrancamos en el siguiente.
+
             pathIndex = path.Count > 1 ? 1 : 0;
         }
     }
 
-    /// <summary>Sigue el camino con Seek (tramos intermedios) y Arrive (último nodo). Devuelve true al terminar.</summary>
     bool FollowPath(float speed)
     {
         if (path == null || pathIndex >= path.Count) return true;
@@ -223,7 +206,7 @@ public class StalkerController : MonoBehaviour
         dir.Normalize();
 
         Vector3 velocity = dir * speed;
-        agent.Move(velocity * Time.deltaTime); // mueve sobre el NavMesh sin hacer pathfinding propio
+        agent.Move(velocity * Time.deltaTime);
 
         Quaternion look = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, look, rotationSpeed * Time.deltaTime);
@@ -237,8 +220,6 @@ public class StalkerController : MonoBehaviour
             return PathfindingGrid.Instance.GetRandomWalkablePosition();
         return transform.position;
     }
-
-    // ----------------- Animación y ataque -----------------
 
     void UpdateAnimations()
     {
@@ -267,7 +248,7 @@ public class StalkerController : MonoBehaviour
         yield return new WaitForSeconds(0.7f);
 
         isAttacking = false;
-        state = State.Chase; // tras atacar, vuelve a evaluar al jugador
+        state = State.Chase;
     }
 
     void ResetAttack()
